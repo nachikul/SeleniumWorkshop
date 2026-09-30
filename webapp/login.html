@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>ShopLite - Login</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="login-wrap">
+    <h1>🛒 ShopLite Login</h1>
+
+    <div id="error-message" class="message error"></div>
+
+    <form id="login-form" novalidate>
+      <div class="field">
+        <label for="username">Username</label>
+        <input type="text" id="username" name="username" placeholder="Enter username">
+        <span id="username-error" class="message field-error"></span>
+      </div>
+      <div class="field">
+        <label for="password">Password</label>
+        <input type="password" id="password" name="password" placeholder="Enter password">
+        <span id="password-error" class="message field-error"></span>
+      </div>
+      <div class="field checkbox">
+        <input type="checkbox" id="remember-me" name="remember-me">
+        <label for="remember-me">Remember me</label>
+      </div>
+      <button type="submit" id="login-btn" class="primary">Login</button>
+    </form>
+
+    <div class="helper-links">
+      <a href="#" id="forgot-password-link">Forgot your password?</a>
+    </div>
+
+    <div class="credentials-hint">
+      Demo credentials — username: <b>student</b> / password: <b>Workshop@123</b>
+    </div>
+  </div>
+
+  <script src="js/app.js"></script>
+  <script>
+    const form = document.getElementById("login-form");
+    const errorBox = document.getElementById("error-message");
+    const usernameField = document.getElementById("username");
+    const passwordField = document.getElementById("password");
+    const usernameError = document.getElementById("username-error");
+    const passwordError = document.getElementById("password-error");
+    const loginBtn = document.getElementById("login-btn");
+
+    const ATTEMPTS_KEY = "shoplite_failed_attempts";
+
+    function getAttempts() {
+      return parseInt(sessionStorage.getItem(ATTEMPTS_KEY) || "0", 10);
+    }
+
+    function lockIfNeeded() {
+      if (getAttempts() >= MAX_LOGIN_ATTEMPTS) {
+        loginBtn.disabled = true;
+        errorBox.textContent = "Account locked after " + MAX_LOGIN_ATTEMPTS + " failed attempts. Refresh the page to try again.";
+        errorBox.style.display = "block";
+        return true;
+      }
+      return false;
+    }
+
+    lockIfNeeded();
+
+    document.getElementById("forgot-password-link").addEventListener("click", function (e) {
+      e.preventDefault();
+      errorBox.textContent = "Password reset link has been sent to your registered email (demo only).";
+      errorBox.style.display = "block";
+    });
+
+    form.addEventListener("submit", function (e) {
+      e.preventDefault();
+      usernameError.textContent = "";
+      passwordError.textContent = "";
+      errorBox.style.display = "none";
+
+      if (lockIfNeeded()) return;
+
+      const username = usernameField.value.trim();
+      const password = passwordField.value;
+      let hasFieldError = false;
+
+      if (!username) {
+        usernameError.textContent = "Username is required.";
+        hasFieldError = true;
+      }
+      if (!password) {
+        passwordError.textContent = "Password is required.";
+        hasFieldError = true;
+      }
+      if (hasFieldError) return;
+
+      const user = findUser(username, password);
+      if (user) {
+        sessionStorage.setItem("shoplite_user", user.username);
+        sessionStorage.removeItem(ATTEMPTS_KEY);
+        window.location.href = "dashboard.html";
+      } else {
+        const attempts = getAttempts() + 1;
+        sessionStorage.setItem(ATTEMPTS_KEY, String(attempts));
+        if (!lockIfNeeded()) {
+          errorBox.textContent = "Invalid username or password.";
+          errorBox.style.display = "block";
+        }
+      }
+    });
+  </script>
+</body>
+</html>

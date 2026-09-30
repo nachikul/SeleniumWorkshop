@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>ShopLite - Cart</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">🛒 ShopLite</div>
+    <div class="actions">
+      <a href="dashboard.html">Continue Shopping</a>
+      <a href="cart.html" id="cart-link">Cart <span id="cart-count">0</span></a>
+      <button id="logout-btn">Logout</button>
+    </div>
+  </header>
+
+  <main class="container">
+    <h2>Your Cart</h2>
+    <table class="cart-table" id="cart-table">
+      <thead>
+        <tr><th>Product</th><th>Price</th><th>Qty</th><th>Subtotal</th><th></th></tr>
+      </thead>
+      <tbody id="cart-body"></tbody>
+    </table>
+    <div id="empty-cart">Your cart is empty. <a href="dashboard.html">Go shopping</a>.</div>
+
+    <div class="cart-summary" id="cart-summary" style="display:none;">
+      Total: ₹<span id="cart-total">0</span>
+    </div>
+    <button id="checkout-btn" style="display:none;">Proceed to Checkout</button>
+    <div style="clear:both;"></div>
+
+    <div id="order-success">✅ Order placed successfully! Thank you for shopping with ShopLite.</div>
+  </main>
+
+  <script src="js/app.js"></script>
+  <script>
+    requireLogin();
+
+    function productById(id) {
+      return PRODUCTS.find(function (p) { return p.id === id; });
+    }
+
+    function render() {
+      const cart = getCart();
+      const body = document.getElementById("cart-body");
+      const ids = Object.keys(cart);
+      body.innerHTML = "";
+
+      document.getElementById("cart-count").textContent = cartItemCount(cart);
+      document.getElementById("empty-cart").style.display = ids.length === 0 ? "block" : "none";
+      document.getElementById("cart-table").style.display = ids.length === 0 ? "none" : "table";
+      document.getElementById("cart-summary").style.display = ids.length === 0 ? "none" : "block";
+      document.getElementById("checkout-btn").style.display = ids.length === 0 ? "none" : "inline-block";
+
+      let total = 0;
+      ids.forEach(function (id) {
+        const product = productById(id);
+        const qty = cart[id];
+        const subtotal = product.price * qty;
+        total += subtotal;
+        const row = document.createElement("tr");
+        row.setAttribute("data-product-id", id);
+        row.innerHTML =
+          "<td>" + product.name + "</td>" +
+          "<td>₹" + product.price + "</td>" +
+          "<td>" + qty + "</td>" +
+          "<td>₹" + subtotal + "</td>" +
+          '<td><button class="remove-btn" data-product-id="' + id + '">Remove</button></td>';
+        body.appendChild(row);
+      });
+      document.getElementById("cart-total").textContent = total;
+
+      document.querySelectorAll(".remove-btn").forEach(function (btn) {
+        btn.addEventListener("click", function () {
+          removeFromCart(btn.getAttribute("data-product-id"));
+          render();
+        });
+      });
+    }
+
+    document.getElementById("logout-btn").addEventListener("click", logout);
+    document.getElementById("checkout-btn").addEventListener("click", function () {
+      saveCart({});
+      render();
+      document.getElementById("order-success").style.display = "block";
+    });
+
+    render();
+  </script>
+</body>
+</html>

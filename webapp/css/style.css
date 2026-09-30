@@ -1,0 +1,83 @@
+* { box-sizing: border-box; }
+body {
+  font-family: -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  background: #f4f4f4;
+  margin: 0;
+  color: #222;
+}
+header.topbar {
+  background: #131921;
+  color: #fff;
+  padding: 14px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+header.topbar .brand { font-size: 20px; font-weight: bold; color: #f0c14b; }
+header.topbar .actions { display: flex; align-items: center; gap: 16px; }
+header.topbar a, header.topbar button {
+  color: #fff; background: none; border: none; cursor: pointer; font-size: 15px;
+}
+#cart-count {
+  background: #f0c14b; color: #111; border-radius: 50%;
+  padding: 2px 8px; font-weight: bold; margin-left: 4px;
+}
+
+.login-wrap {
+  max-width: 380px;
+  margin: 60px auto;
+  background: #fff;
+  padding: 32px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+}
+.login-wrap h1 { text-align: center; font-size: 22px; margin-bottom: 24px; }
+.field { margin-bottom: 16px; }
+.field label { display: block; margin-bottom: 6px; font-size: 14px; font-weight: 600; }
+.field input[type="text"], .field input[type="password"] {
+  width: 100%; padding: 10px; border: 1px solid #a6a6a6; border-radius: 4px; font-size: 15px;
+}
+.field.checkbox { display: flex; align-items: center; gap: 8px; }
+.field.checkbox label { margin: 0; font-weight: normal; }
+button.primary {
+  width: 100%; padding: 10px; background: #f0c14b; border: 1px solid #a88734;
+  border-radius: 4px; font-size: 15px; cursor: pointer; font-weight: 600;
+}
+button.primary:disabled { background: #ddd; border-color: #bbb; cursor: not-allowed; color: #888; }
+.message { padding: 10px; border-radius: 4px; margin-bottom: 16px; font-size: 14px; display: none; }
+.message.error { background: #fdecea; color: #b3261e; border: 1px solid #f5c2c0; display: block; }
+.message.field-error { color: #b3261e; font-size: 13px; margin-top: 4px; display: block; }
+.helper-links { text-align: center; margin-top: 16px; font-size: 14px; }
+.helper-links a { color: #0066c0; text-decoration: none; }
+.credentials-hint {
+  margin-top: 20px; font-size: 12px; color: #666; background: #f7f7f7;
+  padding: 10px; border-radius: 4px; text-align: center;
+}
+
+main.container { max-width: 1000px; margin: 24px auto; padding: 0 16px; }
+.welcome-bar { margin-bottom: 16px; font-size: 18px; }
+.search-bar { display: flex; gap: 8px; margin-bottom: 24px; }
+.search-bar input { flex: 1; padding: 10px; border: 1px solid #a6a6a6; border-radius: 4px; font-size: 15px; }
+.search-bar button { padding: 10px 18px; background: #131921; color: #fff; border: none; border-radius: 4px; cursor: pointer; }
+
+.product-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 16px; }
+.product-card { background: #fff; border: 1px solid #ddd; border-radius: 8px; padding: 16px; text-align: center; }
+.product-card .emoji { font-size: 36px; }
+.product-card .product-name { font-weight: 600; margin: 8px 0 4px; }
+.product-card .product-price { color: #b12704; font-weight: bold; margin-bottom: 10px; }
+.product-card button.add-to-cart-btn {
+  width: 100%; padding: 8px; background: #f0c14b; border: 1px solid #a88734;
+  border-radius: 4px; cursor: pointer; font-weight: 600;
+}
+.product-card button.add-to-cart-btn.added { background: #ddf5dd; border-color: #6ab04c; }
+#no-results { display: none; text-align: center; color: #777; margin-top: 40px; }
+
+table.cart-table { width: 100%; border-collapse: collapse; background: #fff; }
+table.cart-table th, table.cart-table td { padding: 12px; border-bottom: 1px solid #eee; text-align: left; }
+table.cart-table button.remove-btn { background: #fff; border: 1px solid #b3261e; color: #b3261e; padding: 6px 12px; border-radius: 4px; cursor: pointer; }
+#empty-cart { display: none; text-align: center; color: #777; margin-top: 40px; }
+.cart-summary { text-align: right; margin-top: 16px; font-size: 18px; }
+#checkout-btn { margin-top: 16px; padding: 12px 24px; background: #f0c14b; border: 1px solid #a88734; border-radius: 4px; cursor: pointer; font-weight: 600; font-size: 15px; float: right; }
+#order-success { display: none; background: #eafbea; border: 1px solid #6ab04c; color: #256029; padding: 16px; border-radius: 6px; margin-top: 16px; text-align: center; font-size: 16px; }

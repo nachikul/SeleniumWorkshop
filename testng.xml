@@ -1,0 +1,16 @@
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+<suite name="SeleniumWorkshopSuite" verbose="1" parallel="classes" thread-count="2">
+
+  <listeners>
+    <listener class-name="com.workshop.listeners.TestListener"/>
+  </listeners>
+
+  <test name="FullRegressionRun">
+    <classes>
+      <class name="com.workshop.tests.Module1_LoginTests"/>
+      <class name="com.workshop.tests.Module2_DataDrivenLoginTests"/>
+      <class name="com.workshop.tests.Module3_ShoppingFlowTests"/>
+    </classes>
+  </test>
+
+</suite>

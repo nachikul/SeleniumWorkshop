@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>ShopLite - Dashboard</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">🛒 ShopLite</div>
+    <div class="actions">
+      <a href="cart.html" id="cart-link">Cart <span id="cart-count">0</span></a>
+      <button id="logout-btn">Logout</button>
+    </div>
+  </header>
+
+  <main class="container">
+    <div class="welcome-bar">Welcome, <span id="welcome-msg"></span>!</div>
+
+    <div class="search-bar">
+      <input type="text" id="search-box" placeholder="Search products by name...">
+      <button id="search-btn">Search</button>
+    </div>
+
+    <div id="product-grid" class="product-grid"></div>
+    <div id="no-results">No products match your search.</div>
+  </main>
+
+  <script src="js/app.js"></script>
+  <script>
+    requireLogin();
+    document.getElementById("welcome-msg").textContent = getLoggedInUser();
+    document.getElementById("cart-count").textContent = cartItemCount();
+
+    document.getElementById("logout-btn").addEventListener("click", logout);
+
+    const grid = document.getElementById("product-grid");
+    const noResults = document.getElementById("no-results");
+
+    function renderProducts(list) {
+      grid.innerHTML = "";
+      noResults.style.display = list.length === 0 ? "block" : "none";
+      list.forEach(function (p) {
+        const card = document.createElement("div");
+        card.className = "product-card";
+        card.setAttribute("data-product-id", p.id);
+        card.innerHTML =
+          '<div class="emoji">' + p.emoji + '</div>' +
+          '<div class="product-name">' + p.name + '</div>' +
+          '<div class="product-price">₹' + p.price + '</div>' +
+          '<button class="add-to-cart-btn" data-product-id="' + p.id + '">Add to Cart</button>';
+        grid.appendChild(card);
+      });
+
+      document.querySelectorAll(".add-to-cart-btn").forEach(function (btn) {
+        btn.addEventListener("click", function () {
+          const count = addToCart(btn.getAttribute("data-product-id"));
+          document.getElementById("cart-count").textContent = count;
+          btn.textContent = "Added ✓";
+          btn.classList.add("added");
+          setTimeout(function () {
+            btn.textContent = "Add to Cart";
+            btn.classList.remove("added");
+          }, 1200);
+        });
+      });
+    }
+
+    function runSearch() {
+      const term = document.getElementById("search-box").value.trim().toLowerCase();
+      const filtered = PRODUCTS.filter(function (p) {
+        return p.name.toLowerCase().includes(term);
+      });
+      renderProducts(filtered);
+    }
+
+    document.getElementById("search-btn").addEventListener("click", runSearch);
+    document.getElementById("search-box").addEventListener("keyup", function (e) {
+      if (e.key === "Enter") runSearch();
+    });
+
+    renderProducts(PRODUCTS);
+  </script>
+</body>
+</html>

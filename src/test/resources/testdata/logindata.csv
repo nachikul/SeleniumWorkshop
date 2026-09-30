@@ -1,0 +1,6 @@
+username,password,expectSuccess
+student,Workshop@123,true
+admin,Admin@123,true
+student,wrongpass,false
+nouser,Workshop@123,false
+admin,Workshop@123,false

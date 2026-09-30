@@ -1,0 +1,24 @@
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+<!--
+  Demonstrates running only a subset of tests by TestNG group.
+  Run with: mvn test -DsuiteXmlFile=testng-smoke.xml
+-->
+<suite name="SmokeSuite" verbose="1">
+
+  <listeners>
+    <listener class-name="com.workshop.listeners.TestListener"/>
+  </listeners>
+
+  <test name="SmokeOnly">
+    <groups>
+      <run>
+        <include name="smoke"/>
+      </run>
+    </groups>
+    <classes>
+      <class name="com.workshop.tests.Module1_LoginTests"/>
+      <class name="com.workshop.tests.Module3_ShoppingFlowTests"/>
+    </classes>
+  </test>
+
+</suite>
